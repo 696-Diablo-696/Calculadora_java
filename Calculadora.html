@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<!-- 
+    DOCTYPE: Declara que este es un documento HTML5. Siempre debe ser la primera línea.
+    Alternativa: En versiones antiguas se usaba una declaración más larga, pero HTML5 la simplificó.
+-->
+
+<html lang="es">
+<!-- 
+    Etiqueta raíz que contiene todo el documento HTML.
+    lang="es": Indica que el idioma del contenido es español. Mejora la accesibilidad y SEO.
+    Ejercicio: Cambia "es" por "en" para inglés, o "fr" para francés.
+-->
+
+<head>
+    <!-- 
+        HEAD: Contiene metadatos (información sobre la página) que no se muestran directamente.
+        Aquí van los estilos CSS, enlaces a archivos externos, título de la página, etc.
+    -->
+    
+    <meta charset="UTF-8">
+    <!-- 
+        Define la codificación de caracteres como UTF-8 (estándar universal).
+        Permite mostrar correctamente tildes, eñes y símbolos especiales.
+        Ejercicio: Elimina esta línea y observa cómo se muestran mal los acentos.
+    -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+        Hace que la página sea responsive (se adapte a dispositivos móviles).
+        width=device-width: El ancho será igual al del dispositivo.
+        initial-scale=1.0: Zoom inicial al 100%.
+        Ejercicio: Prueba la página en modo móvil del navegador (F12 > ícono de móvil).
+    -->
+    
+    <title>Calculadora Simple</title>
+    <!-- 
+        TITLE: Texto que aparece en la pestaña del navegador.
+        También se usa en los resultados de búsqueda de Google.
+        Ejercicio: Cambia el título por "Mi Primera Calculadora" y observa la pestaña.
+    -->
+    
+    <style>
+        /* 
+        ═══════════════════════════════════════════════════════════════════
+                            SECCIÓN DE ESTILOS CSS
+        ═══════════════════════════════════════════════════════════════════
+        CSS (Cascading Style Sheets) define la apariencia visual de la página.
+        Sintaxis: selector { propiedad: valor; }
+        */
+        
+        body {
+            /* 
+            BODY: Aplica estilos a toda la página.
+            Es el contenedor principal de todo lo visible.
+            */
+            
+            font-family: Arial, sans-serif;
+            /* 
+            Define la tipografía (fuente) del texto.
+            Arial: Fuente principal. Si no está disponible, usa cualquier sans-serif.
+            Ejercicio: Prueba con 'Georgia, serif' o 'Courier New, monospace'.
+            */
+            
+            display: flex;
+            /* 
+            Flexbox: Sistema moderno de diseño que facilita alinear elementos.
+            Convierte el body en un contenedor flexible.
+            Alternativa: Podrías usar 'display: grid' para layouts más complejos.
+            */
+            
+            justify-content: center;
+            /* 
+            Centra horizontalmente el contenido dentro del flex container.
+            Otras opciones: flex-start (izquierda), flex-end (derecha), space-between.
+            Ejercicio: Cambia a 'flex-start' y observa cómo se mueve la calculadora.
+            */
+            
+            align-items: center;
+            /* 
+            Centra verticalmente el contenido.
+            Otras opciones: flex-start (arriba), flex-end (abajo), stretch.
+            Nota: justify-content + align-items = centrado perfecto horizontal y vertical.
+            */
+            
+            min-height: 100vh;
+            /* 
+            vh = viewport height (altura de la ventana).
+            100vh = 100% de la altura de la pantalla visible.
+            min-height: Al menos 100vh, pero puede crecer si el contenido es más alto.
+            Ejercicio: Cambia a 'height: 50vh' y observa la diferencia.
+            */
+            
+            margin: 0;
+            /* 
+            Elimina el margen predeterminado del navegador (body tiene ~8px por defecto).
+            Esto evita espacios blancos no deseados alrededor de la página.
+            Ejercicio: Elimina esta línea y verás márgenes blancos alrededor.
+            */
+            
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* 
+            Crea un degradado (gradiente) de fondo.
+            linear-gradient: Gradiente lineal (también existe radial-gradient).
+            135deg: Ángulo del gradiente (de arriba-izquierda a abajo-derecha).
+            #667eea: Color inicial (azul violeta).
+            #764ba2: Color final (púrpura).
+            Ejercicio: Cambia los colores por #ff6b6b y #4ecdc4 para un degradado coral-turquesa.
+            Alternativa: background: #667eea; para un color sólido.
+            */
+        }
+        
+        .calculadora {
+            /* 
+            Selector de clase: Aplica estilos a elementos con class="calculadora".
+            Las clases se reutilizan (varios elementos pueden tener la misma clase).
+            Alternativa: Podrías usar #calculadora (ID) pero solo para un elemento único.
+            */
+            
+            background: white;
+            /* 
+            Color de fondo blanco sólido.
+            Alternativa: background: rgba(255, 255, 255, 0.9); para un blanco semi-transparente.
+            */
+            
+            padding: 30px;
+            /* 
+            Espacio interior entre el borde del contenedor y su contenido.
+            30px en los 4 lados (arriba, derecha, abajo, izquierda).
+            Alternativa: padding: 20px 40px; (vertical horizontal).
+            Ejercicio: Cambia a 10px y observa cómo se comprime la calculadora.
+            */
+            
+            border-radius: 10px;
+            /* 
+            Redondea las esquinas del contenedor.
+            10px = radio de curvatura.
+            Ejercicio: Prueba con 0px (esquinas rectas) o 50px (muy redondeado).
+            */
+            
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            /* 
+            Crea una sombra alrededor del contenedor para dar efecto de profundidad.
+            Sintaxis: horizontal vertical blur color
+            0: Sin desplazamiento horizontal.
+            10px: Sombra desplazada 10px hacia abajo.
+            25px: Difuminado de la sombra.
+            rgba(0,0,0,0.2): Negro con 20% de opacidad (sombra suave).
+            Ejercicio: Cambia a '0 0 50px rgba(255,0,0,0.5)' para una sombra roja brillante.
+            */
+            
+            width: 300px;
+            /* 
+            Ancho fijo del contenedor: 300 píxeles.
+            Alternativa: max-width: 300px; (máximo 300px, pero se adapta en pantallas pequeñas).
+            Ejercicio: Cambia a 500px para una calculadora más ancha.
+            */
+        }
+        
+        h2 {
+            /* 
+            H2: Selector de etiqueta. Aplica estilos a todos los <h2> del documento.
+            H2 es un encabezado de segundo nivel (H1 es el más importante).
+            */
+            
+            text-align: center;
+            /* 
+            Alinea el texto al centro horizontalmente.
+            Otras opciones: left (izquierda), right (derecha), justify (justificado).
+            */
+            
+            color: #333;
+            /* 
+            Color del texto en hexadecimal.
+            #333 = gris oscuro (equivalente a rgb(51, 51, 51)).
+            #000 sería negro puro, #fff blanco puro.
+            Ejercicio: Cambia a #667eea para que coincida con el color del fondo.
+            */
+            
+            margin-top: 0;
+            /* 
+            Elimina el margen superior del h2.
+            Por defecto, los encabezados tienen márgenes que crean espacios.
+            Esto evita un espacio extra arriba del título.
+            */
+        }
+        
+        .campo {
+            /* 
+            Clase que agrupa cada campo del formulario (label + input).
+            Facilita dar espaciado consistente entre campos.
+            */
+            
+            margin-bottom: 15px;
+            /* 
+            Espacio de 15px debajo de cada campo.
+            Separa visualmente un campo del siguiente.
+            Ejercicio: Cambia a 30px para más separación, o 5px para campos más compactos.
+            */
+        }
+        
+        label {
+            /* 
+            LABEL: Etiquetas descriptivas para los campos de entrada.
+            Mejoran la accesibilidad (lectores de pantalla) y usabilidad.
+            */
+            
+            display: block;
+            /* 
+            Hace que el label ocupe toda la línea (se comporta como un bloque).
+            Por defecto, label es inline (en línea, como el texto normal).
+            Esto hace que el input aparezca debajo del label, no al lado.
+            Ejercicio: Cambia a 'inline' y observa cómo label e input quedan juntos.
+            */
+            
+            margin-bottom: 5px;
+            /* 
+            Pequeño espacio entre el label y el input que está debajo.
+            Mejora la legibilidad visual.
+            */
+            
+            color: #555;
+            /* 
+            Color gris medio para las etiquetas.
+            Menos prominente que el texto negro (#000) pero legible.
+            */
+            
+            font-weight: bold;
+            /* 
+            Hace el texto más grueso (negrita).
+            Otras opciones: normal, lighter, o valores numéricos (100-900).
+            Ejercicio: Cambia a 'normal' para un estilo más sutil.
+            */
+        }
+        
+        input[type="number"], select {
+            /* 
+            Selector múltiple: Aplica estilos a inputs de tipo número Y a selects.
+            La coma significa "y también".
+            [type="number"]: Selector de atributo. Solo inputs con type="number".
+            Alternativa: Podrías crear una clase .input-field para reutilizar estilos.
+            */
+            
+            width: 100%;
+            /* 
+            Ancho del 100% del contenedor padre.
+            Hace que los inputs ocupen todo el ancho disponible.
+            Ejercicio: Cambia a 50% para inputs más estrechos.
+            */
+            
+            padding: 10px;
+            /* 
+            Espacio interno dentro del input (hace el campo más alto y cómodo de usar).
+            10px en todos los lados.
+            Ejercicio: Aumenta a 15px para campos más grandes.
+            */
+            
+            border: 2px solid #ddd;
+            /* 
+            Borde del input.
+            2px: Grosor del borde.
+            solid: Estilo sólido (también existe dashed, dotted, double).
+            #ddd: Color gris claro.
+            Ejercicio: Cambia a '3px dashed #667eea' para un borde punteado azul.
+            */
+            
+            border-radius: 5px;
+            /* 
+            Esquinas ligeramente redondeadas (5px de radio).
+            Hace los inputs menos rectangulares y más modernos.
+            */
+            
+            font-size: 16px;
+            /* 
+            Tamaño de la letra dentro del input.
+            16px es un tamaño cómodo de leer y escribir.
+            Nota: En móviles, menos de 16px puede causar zoom automático al escribir.
+            */
+            
+            box-sizing: border-box;
+            /* 
+            IMPORTANTE: Incluye padding y border en el cálculo del width.
+            Sin esto, width: 100% + padding + border = desbordamiento.
+            Con esto, width: 100% incluye todo (más predecible).
+            Ejercicio: Elimina esta línea y observa cómo se desalinean los inputs.
+            */
+            
+            transition: border-color 0.3s;
+            /* 
+            Animación suave cuando cambia el color del borde.
+            border-color: Propiedad que se anima.
+            0.3s: Duración de la transición (0.3 segundos).
+            Esto crea el efecto de cambio de color al hacer focus en el input.
+            Ejercicio: Cambia a 1s para una transición más lenta.
+            */
+        }
+        
+        input[type="number"]:focus, select:focus {
+            /* 
+            :focus es un pseudo-selector que se activa cuando el input está seleccionado.
+            Cuando haces clic en un input, está en estado "focus".
+            */
+            
+            outline: none;
+            /* 
+            Elimina el contorno azul predeterminado del navegador.
+            ADVERTENCIA: Solo elimínalo si proporcionas otra indicación visual (como el cambio de borde).
+            De lo contrario, afecta la accesibilidad.
+            */
+            
+            border-color: #667eea;
+            /* 
+            Cambia el color del borde a azul cuando el input está seleccionado.
+            Combinado con la transition anterior, crea un efecto suave.
+            Esto indica al usuario qué campo está activo.
+            Ejercicio: Cambia el color por #ff6b6b para un borde rojo al seleccionar.
+            */
+        }
+        
+        select {
+            /* 
+            Estilos adicionales solo para el SELECT (menú desplegable).
+            Se combinan con los estilos compartidos anteriores.
+            */
+            
+            cursor: pointer;
+            /* 
+            Cambia el cursor del mouse a una "manita" al pasar sobre el select.
+            Indica que el elemento es clickeable.
+            Otras opciones: default (flecha), text (cursor de texto), not-allowed.
+            */
+        }
+        
+        #result {
+            /* 
+            #result: Selector de ID. Aplica estilos al elemento con id="result".
+            Los IDs son únicos (solo debe haber un elemento con ese ID en la página).
+            Se usa # para IDs y . para clases.
+            */
+            
+            background-color: #f0f0f0;
+            /* 
+            Fondo gris muy claro para el campo de resultado.
+            Diferencia visualmente el resultado de los campos de entrada.
+            Ejercicio: Cambia a #e8f4f8 para un fondo azul clarito.
+            */
+            
+            font-weight: bold;
+            /* 
+            Resultado en negrita para destacarlo.
+            */
+            
+            color: #667eea;
+            /* 
+            Texto del resultado en azul violeta (color del tema).
+            Hace el resultado más llamativo visualmente.
+            */
+            
+            font-size: 18px;
+            /* 
+            Texto ligeramente más grande que los inputs (16px).
+            Destaca el resultado final.
+            Ejercicio: Aumenta a 24px para un resultado más prominente.
+            */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+    ═══════════════════════════════════════════════════════════════════
+                        SECCIÓN DE ESTRUCTURA HTML
+    ═══════════════════════════════════════════════════════════════════
+    BODY: Contiene todo el contenido visible de la página.
+    Todo lo que el usuario ve y con lo que interactúa está aquí.
+    -->
+    
+    <div class="calculadora">
+        <!-- 
+        DIV: Contenedor genérico (división).
+        No tiene significado semántico, solo agrupa elementos.
+        class="calculadora": Asocia este div con los estilos CSS de .calculadora
+        Alternativa semántica: <main> o <section> para mejor accesibilidad.
+        -->
+        
+        <h2>Calculadora</h2>
+        <!-- 
+        H2: Encabezado de nivel 2.
+        Jerarquía de encabezados: H1 (más importante) > H2 > H3 > H4 > H5 > H6 (menos importante).
+        En esta página, H2 es apropiado como título principal del componente.
+        Ejercicio: Cambia el texto por "Mi Calculadora Personalizada".
+        -->
+        
+        <div class="campo">
+            <!-- Contenedor del primer campo (agrupa label + input) -->
+            
+            <label for="numero1">Primer número:</label>
+            <!-- 
+            LABEL: Etiqueta descriptiva para el input.
+            for="numero1": Conecta el label con el input que tiene id="numero1".
+            Beneficio: Al hacer clic en el label, se activa automáticamente el input asociado.
+            Esto mejora la usabilidad, especialmente en móviles.
+            Ejercicio: Haz clic en el texto "Primer número:" y observa cómo se selecciona el input.
+            -->
+            
+            <input type="number" id="numero1" step="any" placeholder="Ingresa un número">
+            <!-- 
+            INPUT: Campo de entrada de datos.
+            
+            type="number": Especifica que solo acepta números.
+                - En móviles, muestra un teclado numérico.
+                - Incluye flechas arriba/abajo para incrementar/decrementar.
+                Alternativa: type="text" acepta cualquier carácter.
+            
+            id="numero1": Identificador único del elemento.
+                - Se usa para seleccionar este elemento desde CSS (#numero1) o JavaScript.
+                - Debe conectarse con el atributo 'for' del label.
+            
+            step="any": Permite números decimales con cualquier precisión.
+                - Sin esto, solo permitiría enteros o decimales con pasos específicos.
+                Alternativa: step="0.01" para permitir solo 2 decimales (útil para dinero).
+            
+            placeholder="...": Texto de ayuda que aparece cuando el campo está vacío.
+                - Desaparece al empezar a escribir.
+                - No sustituye al label (el label es para accesibilidad).
+                Ejercicio: Cambia el texto por "Ej: 5.5".
+            -->
+        </div>
+        
+        <div class="campo">
+            <!-- Segundo campo, estructura idéntica al primero -->
+            
+            <label for="numero2">Segundo número:</label>
+            
+            <input type="number" id="numero2" step="any" placeholder="Ingresa un número">
+            <!-- 
+            NOTA: id="numero2" es diferente a numero1 (los IDs deben ser únicos).
+            Ejercicio de ampliación: Añade un tercer campo numero3 para operaciones con 3 números.
+            -->
+        </div>
+        
+        <div class="campo">
+            <!-- Campo del selector de operación -->
+            
+            <label for="operacion">Operación:</label>
+            
+            <select id="operacion">
+                <!-- 
+                SELECT: Menú desplegable (lista de opciones).
+                id="operacion": Identificador para acceder desde JavaScript.
+                -->
+                
+                <option value="">Selecciona una operación</option>
+                <!-- 
+                OPTION: Cada opción del menú desplegable.
+                
+                value="": El valor que se enviará cuando se seleccione esta opción.
+                    - Valor vacío indica "ninguna operación seleccionada".
+                    - Es la opción por defecto (aparece primero).
+                
+                Texto entre tags: Lo que ve el usuario en el menú.
+                Nota: value puede ser diferente del texto visible.
+                -->
+                
+                <option value="suma">Suma (+)</option>
+                <!-- 
+                value="suma": Cuando selecciones esta opción, operacion.value será "suma".
+                El JavaScript usará este valor para saber qué operación realizar.
+                Ejercicio: Añade <option value="potencia">Potencia (^)</option> y programa la operación.
+                -->
+                
+                <option value="resta">Resta (-)</option>
+                <!-- value="resta": Identificador de la operación resta -->
+                
+                <option value="multiplicacion">Multiplicación (×)</option>
+                <!-- 
+                value="multiplicacion": Identificador de la multiplicación.
+                Nota: No uses espacios en los valores, usa guiones o camelCase.
+                Ejercicio de aprendizaje: Cambia "×" por "*" y observa el símbolo.
+                -->
+                
+                <option value="division">División (÷)</option>
+                <!-- 
+                value="division": Identificador de la división.
+                Ejercicio avanzado: Añade operaciones como módulo (%), raíz cuadrada, etc.
+                -->
+            </select>
+        </div>
+        
+        <div class="campo">
+            <!-- Campo del resultado -->
+            
+            <label for="result">Resultado:</label>
+            
+            <input type="text" id="result" readonly placeholder="El resultado aparecerá aquí">
+            <!-- 
+            type="text": Tipo texto (no number) porque puede mostrar mensajes como "Error".
+            
+            id="result": Identificador para acceder y modificar este campo desde JavaScript.
+            
+            readonly: Atributo booleano que hace el campo de solo lectura.
+                - El usuario no puede escribir en él.
+                - Solo el JavaScript puede cambiar su valor.
+                - Sin esto, el usuario podría modificar el resultado manualmente.
+                Ejercicio: Elimina 'readonly' e intenta escribir en el campo de resultado.
+            
+            NOTA: En la función calcular(), accedemos a este input como 'resultado'
+            pero el id es 'result'. Debemos mantener consistencia.
+            -->
+        </div>
+    </div>
+    
+    <!-- 
+    ═══════════════════════════════════════════════════════════════════
+                        SECCIÓN DE JAVASCRIPT
+    ═══════════════════════════════════════════════════════════════════
+    SCRIPT: Contiene código JavaScript que agrega interactividad a la página.
+    JavaScript se ejecuta en el navegador del usuario.
+    -->
+    
+    <script>
+        // Líneas con // son comentarios de una sola línea (no se ejecutan)
+        /* Bloques con /* */ son comentarios multilínea */
+        
+        // ═══════════════════════════════════════════════════════════════
+        // PASO 1: SELECCIONAR ELEMENTOS DEL DOM
+        // ═══════════════════════════════════════════════════════════════
+        // DOM (Document Object Model): Representación de la página HTML como objetos JavaScript.
+        // Podemos seleccionar y manipular cualquier elemento HTML desde JavaScript.
+        
+        const numero1 = document.getElementById('numero1');
+        /*
+        EXPLICACIÓN:
+        - const: Declara una constante (variable que no cambiará su referencia).
+        - numero1: Nombre de la variable (puedes usar cualquier nombre descriptivo).
+        - document: Objeto global que representa toda la página HTML.
+        - getElementById('numero1'): Método que busca un elemento con id="numero1".
+        - Retorna: El elemento <input id="numero1"> como objeto JavaScript.
+        
+        Ahora podemos usar 'numero1' para acceder y modificar ese input.
+        Por ejemplo: numero1.value obtiene el valor escrito en el input.
+        
+        Alternativas de selección:
+        - document.querySelector('#numero1'): Más moderno, usa selectores CSS.
+        - document.querySelectorAll('.clase'): Selecciona todos los elementos con esa clase.
+        
+        Ejercicio: Abre la consola del navegador (F12), escribe 'numero1' y presiona Enter.
+        Verás el objeto del input. Luego escribe 'numero1.value' para ver su contenido.
+        */
+        
+        const numero2 = document.getElementById('numero2');
+        // Selecciona el segundo campo de entrada (mismo concepto que numero1)
+        
+        const operacion = document.getElementById('operacion');
+        // Selecciona el elemento <select> del desplegable de operaciones
+        // operacion.value retornará el value del <option> seleccionado ("suma", "resta", etc.)
+        
+        const resultado = document.getElementById('result');
+        /*
+        Selecciona el campo de resultado.
+        IMPORTANTE: Hay inconsistencia en el código original.
+        - En HTML el id es 'result'
+        - Aquí lo llamamos 'resultado'
+        Para que funcione, debemos usar el mismo nombre del id.
+        
+        Ejercicio de depuración: Si cambiases el id en HTML a 'resultado',
+        este código seguiría funcionando. La consistencia es importante.
+        */
+        
+        // ═══════════════════════════════════════════════════════════════
+        // PASO 2: DEFINIR LA FUNCIÓN QUE REALIZA LOS CÁLCULOS
+        // ═══════════════════════════════════════════════════════════════
+        
+        function calcular() {
+            /*
+            FUNCTION: Define una función (bloque de código reutilizable).
+            
+            calcular: Nombre de la función (puedes elegir cualquier nombre descriptivo).
+            (): Paréntesis para parámetros (esta función no recibe parámetros).
+            {}: Llaves que contienen el código de la función.
+            
+            Esta función se ejecutará cada vez que:
+            - El usuario escriba en numero1 o numero2
+            - El usuario cambie la operación seleccionada
+            
+            Concepto: Las funciones son bloques de código que podemos ejecutar múltiples veces.
+            Alternativa: Podrías usar una función flecha: const calcular = () => { ... }
+            */
+            
+            const num1 = parseFloat(numero1.value);
+            /*
+            EXPLICACIÓN PASO A PASO:
+            
+            1. numero1.value: Obtiene el texto escrito en el primer input.
+               - value siempre es un STRING (texto), incluso si escribiste un número.
+               - Ejemplo: Si escribiste 5, numero1.value es "5" (texto).
+            
+            2. parseFloat("5"): Convierte el texto "5" en el número 5.
+               - parseFloat: Función de JavaScript que convierte strings a números decimales.
+               - Ejemplo: parseFloat("3.14") retorna el número 3.14
+               - Ejemplo: parseFloat("abc") retorna NaN (Not a Number)
+            
+            3. const num1: Guardamos el número resultante en una constante.
+            
+            ¿Por qué parseFloat y no parseInt?
+            - parseInt convierte a enteros: parseInt("3.14") = 3
+            - parseFloat mantiene decimales: parseFloat("3.14") = 3.14
+            
+            Ejercicio: Imprime en consola el tipo de dato:
+            console.log(typeof numero1.value); // "string"
+            console.log(typeof num1); // "number"
+            */
+            
+            const num2 = parseFloat(numero2.value);
+            // Convierte el valor del segundo input de texto a número decimal
+            // Mismo proceso que num1
+            
+            const op = operacion.value;
+            /*
+            Obtiene el valor de la operación seleccionada.
+            - Si seleccionaste "Suma (+)", op será "suma"
+            - Si seleccionaste "División (÷)", op será "division"
+            - Si no seleccionaste nada, op será "" (string vacío)
+            
+            operacion.value retorna el atributo 'value' del <option> seleccionado.
+            */
+            
+            // ───────────────────────────────────────────────────────────
+            // VALIDACIÓN 1: Verificar que los números son válidos
+            // ───────────────────────────────────────────────────────────
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                /*
+                IF: Estructura condicional. Si la condición es verdadera, ejecuta el código dentro.
+                
+                isNaN(num1): Función que verifica si num1 NO es un número (is Not a Number).
+                    - isNaN(5) = false (5 SÍ es un número)
+                    - isNaN("abc") = true (texto NO es un número)
+                    - isNaN(NaN) = true
+                
+                || : Operador lógico OR (O).
+                    - true || false = true
+                    - false || false = false
+                    - Se lee como "o": Si num1 no es número O num2 no es número
+                
+                CONDICIÓN COMPLETA:
+                "Si el primer número NO es válido O el segundo número NO es válido"
+                
+                ¿Cuándo se cumple esta condición?
+                - Cuando los campos están vacíos: parseFloat("") = NaN
+                - Cuando hay texto inválido: parseFloat("abc") = NaN
+                - Cuando solo uno de los campos está lleno
+                
+                Alternativa con &&:
+                if (numero1.value === "" || numero2.value === "") { ... }
+                Verifica directamente si los campos están vacíos.
+                */
+                
+                resultado.value = '';
+                /*
+                Si los números no son válidos, limpiamos el resultado.
+                resultado.value = '': Asigna un string vacío al campo de resultado.
+                Esto borra cualquier resultado anterior.
+                
+                Ejercicio: Cambia por: resultado.value = 'Ingresa ambos números';
+                Para dar un mensaje más claro al usuario.
+                */
+                
+                return;
+                /*
+                RETURN: Sale de la función inmediatamente.
+                El código después de return no se ejecuta.
+                
+                ¿Por qué usar return aquí?
+                - Evita ejecutar el resto del código si los datos no son válidos.
+                - Es una técnica llamada "early return" (retorno temprano).
+                
+                Sin return, el código continuaría y podría causar errores o resultados incorrectos.
+                */
+            }
+            
+            // ───────────────────────────────────────────────────────────
+            // VALIDACIÓN 2: Verificar que se seleccionó una operación
+            // ───────────────────────────────────────────────────────────
+            
+            if (op === '') {
+                /*
+                === : Operador de igualdad estricta.
+                    - Compara valor Y tipo de dato.
+                    - '' === '' = true
+                    - '' === 0 = false (string vacío NO es igual a número 0)
+                
+                == : Igualdad débil (NO recomendado)
+                    - '' == 0 = true (convierte tipos automáticamente)
+                
+                SIEMPRE USA === para evitar errores sutiles.
+                
+                CONDICIÓN: "Si no se seleccionó ninguna operación"
+                - El primer <option> tiene value="" (vacío)
+                - Si está seleccionado, op será ""
+                */
+                
+                resultado.value = '';
+                // Limpia el resultado si no hay operación seleccionada
+                
+                return;
+                // Sale de la función (no tiene sentido calcular sin operación)
+            }
+            
+            // ───────────────────────────────────────────────────────────
+            // PASO 3: REALIZAR EL CÁLCULO SEGÚN LA OPERACIÓN
+            // ───────────────────────────────────────────────────────────
+            
+            let res;
+            /*
+            LET: Declara una variable que PUEDE cambiar su valor.
+            - Diferente de 'const' que NO puede cambiar.
+            - Usamos let porque res cambiará según la operación.
+            
+            res: Variable que guardará el resultado del cálculo.
+            - Declaramos sin valor inicial (undefined por ahora).
+            - Se asignará dentro del switch según la operación.
+            
+            ¿Por qué let y no const?
+            - res tendrá diferentes valores según el case del switch.
+            - const no permitiría reasignaciones.
+            */
+            
+            switch(op) {
+                /*
+                SWITCH: Estructura de control para múltiples opciones.
+                Es más limpio que múltiples if-else cuando tienes muchas opciones.
+                
+                switch(op): Evalúa la variable op (que contiene "suma", "resta", etc.)
+                
+                FUNCIONAMIENTO:
+                1. Compara op con cada 'case'
+                2. Cuando encuentra coincidencia, ejecuta ese bloque
+                3. 'break' sale del switch
+                
+                Alternativa con IF-ELSE:
+                if (op === 'suma') { res = num1 + num2; }
+                else if (op === 'resta') { res = num1 - num2; }
+                ...
+                Es válido pero menos legible con muchas opciones.
+                */
+                
+                case 'suma':
+                    /*
+                    CASE: Define una opción posible.
+                    'suma': Valor que buscamos en op.
+                    Si op === 'suma', ejecuta el código de este case.
+                    */
+                    
+                    res = num1 + num2;
+                    /*
+                    OPERACIÓN SUMA:
+                    - El operador + suma dos números.
+                    - Ejemplo: 5 + 3 = 8
+                    - num1 y num2 son números (gracias a parseFloat)
+                    
+                    ADVERTENCIA: Si fueran strings, + los concatenaría:
+                    - "5" + "3" = "53" (une textos)
+                    - 5 + 3 = 8 (suma números)
+                    Por eso fue crucial usar parseFloat antes.
+                    
+                    Ejercicio: Comenta la línea de parseFloat y observa resultados incorrectos.
+                    */
+                    
+                    break;
+                    /*
+                    BREAK: Sale del switch inmediatamente.
+                    Sin break, continuaría ejecutando los siguientes cases (efecto "fall-through").
+                    
+                    Ejercicio de aprendizaje: Elimina este break y observa comportamientos extraños.
+                    */
+                
+                case 'resta':
+                    // Si op === 'resta', ejecuta este bloque
+                    
+                    res = num1 - num2;
+                    /*
+                    OPERACIÓN RESTA:
+                    - El operador - resta el segundo número del primero.
+                    - Ejemplo: 10 - 3 = 7
+                    - ORDEN IMPORTANTE: num1 - num2 ≠ num2 - num1
+                    
+                    Ejercicio: Calcula 5 - 8 y observa el resultado negativo (-3).
+                    */
+                    
+                    break;
+                
+                case 'multiplicacion':
+                    // Si op === 'multiplicacion', ejecuta este bloque
+                    
+                    res = num1 * num2;
+                    /*
+                    OPERACIÓN MULTIPLICACIÓN:
+                    - El operador * multiplica dos números.
+                    - Ejemplo: 4 * 5 = 20
+                    - En matemáticas usamos ×, en programación usamos *
+                    
+                    Ejercicio: Multiplica 0.5 * 0.2 y observa el resultado decimal (0.1).
+                    */
+                    
+                    break;
+                
+                case 'division':
+                    // Si op === 'division', ejecuta este bloque
+                    
+                    if (num2 === 0) {
+                        /*
+                        VALIDACIÓN ESPECIAL PARA DIVISIÓN:
+                        Dividir por cero es una operación matemática inválida.
+                        
+                        En JavaScript:
+                        - 5 / 0 = Infinity (infinito)
+                        - 0 / 0 = NaN (Not a Number)
+                        
+                        BUENA PRÁCTICA: Detectar división por cero antes de calcular.
+                        Así podemos mostrar un mensaje de error claro al usuario.
+                        */
+                        
+                        resultado.value = 'Error: División por cero';
+                        /*
+                        Muestra mensaje de error en el campo de resultado.
+                        El usuario verá claramente qué salió mal.
+                        
+                        Ejercicio: Personaliza el mensaje: "⚠️ No se puede dividir por cero"
+                        */
+                        
+                        return;
+                        /*
+                        Sale de la función inmediatamente.
+                        No ejecuta res = num1 / num2 (que daría Infinity).
+                        No ejecuta resultado.value = res (que mostraría "Infinity").
+                        */
+                    }
+                    
+                    res = num1 / num2;
+                    /*
+                    OPERACIÓN DIVISIÓN:
+                    - El operador / divide el primer número por el segundo.
+                    - Ejemplo: 10 / 2 = 5
+                    - Puede generar decimales: 7 / 2 = 3.5
+                    - ORDEN IMPORTANTE: num1 / num2 ≠ num2 / num1
+                    
+                    Solo se ejecuta si pasó la validación anterior (num2 !== 0).
+                    
+                    Ejercicio: Divide 1 / 3 y observa el decimal infinito (0.3333...).
+                    Ejercicio avanzado: Redondea el resultado a 2 decimales:
+                    res = Math.round((num1 / num2) * 100) / 100;
+                    */
+                    
+                    break;
+                    /*
+                    Aunque este break es el último del switch, es buena práctica incluirlo.
+                    Si luego añades más cases, evitas errores de fall-through.
+                    */
+            }
+            
+            // ───────────────────────────────────────────────────────────
+            // PASO 4: MOSTRAR EL RESULTADO EN EL CAMPO
+            // ───────────────────────────────────────────────────────────
+            
+            resultado.value = res;
+            /*
+            ASIGNACIÓN DEL RESULTADO:
+            - resultado: El elemento <input id="result"> que seleccionamos al inicio.
+            - .value: Propiedad que contiene el texto visible del input.
+            - = res: Asigna el valor calculado al campo.
+            
+            CONVERSIÓN AUTOMÁTICA:
+            - res es un número (ejemplo: 8)
+            - value requiere un string
+            - JavaScript convierte automáticamente: 8 → "8"
+            
+            El usuario verá el resultado aparecer inmediatamente en el campo.
+            
+            Ejercicio: Formatea el resultado con decimales fijos:
+            resultado.value = res.toFixed(2); // Muestra siempre 2 decimales (ejemplo: 8.00)
+            
+            Ejercicio avanzado: Añade separadores de miles:
+            resultado.value = res.toLocaleString('es-ES'); // 1000 → "1.000"
+            */
+        }
+        
+        // ═══════════════════════════════════════════════════════════════
+        // PASO 5: CONFIGURAR LOS EVENT LISTENERS (DETECTORES DE EVENTOS)
+        // ═══════════════════════════════════════════════════════════════
+        
+        numero1.addEventListener('input', calcular);
+        /*
+        EXPLICACIÓN COMPLETA:
+        
+        addEventListener: Método que "escucha" eventos en un elemento.
+        - Cuando ocurre el evento, ejecuta una función.
+        
+        PARÁMETROS:
+        1. 'input': Tipo de evento a escuchar.
+           - Se dispara cada vez que el valor del input cambia.
+           - Incluye: escribir, borrar, pegar, usar flechas arriba/abajo.
+           
+           Otros eventos comunes:
+           - 'change': Solo cuando terminas de editar y sales del campo.
+           - 'click': Cuando haces clic.
+           - 'keydown': Cuando presionas una tecla.
+           - 'focus': Cuando seleccionas el campo.
+           - 'blur': Cuando sales del campo.
+        
+        2. calcular: Función que se ejecutará cuando ocurra el evento.
+           - NO lleva paréntesis: calcular (sin ())
+           - Con paréntesis la ejecutarías inmediatamente: calcular()
+           - Sin paréntesis, pasas la referencia de la función.
+        
+        FUNCIONAMIENTO:
+        1. Usuario escribe "5" en el primer campo
+        2. Se dispara el evento 'input'
+        3. JavaScript ejecuta la función calcular()
+        4. Se realiza el cálculo y se muestra el resultado
+        
+        VENTAJA:
+        Cálculo en tiempo real, sin necesidad de botón "Calcular".
+        La calculadora responde instantáneamente.
+        
+        Ejercicio: Cambia 'input' por 'change' y observa cómo solo calcula
+        cuando sales del campo (menos responsivo).
+        */
+        
+        numero2.addEventListener('input', calcular);
+        /*
+        Mismo concepto que numero1.
+        Escucha cambios en el segundo campo.
+        
+        Cuando el usuario modifique numero2, se ejecuta calcular().
+        */
+        
+        operacion.addEventListener('change', calcular);
+        /*
+        Escucha cambios en el menú desplegable.
+        
+        'change': Evento apropiado para <select>.
+        - Se dispara cuando seleccionas una opción diferente.
+        - 'input' también funciona, pero 'change' es más semántico para selects.
+        
+        Cuando el usuario elige una operación diferente, se ejecuta calcular().
+        
+        Flujo completo de la aplicación:
+        1. Usuario escribe 5 en numero1 → calcular() → (no hay resultado, falta numero2)
+        2. Usuario escribe 3 en numero2 → calcular() → (no hay resultado, falta operación)
+        3. Usuario selecciona "Suma" → calcular() → Resultado: 8
+        4. Usuario cambia a "Multiplicación" → calcular() → Resultado: 15
+        
+        Cada cambio recalcula instantáneamente.
+        */
+        
+        /*
